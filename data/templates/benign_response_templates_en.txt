@@ -1,0 +1,3 @@
+Safe summary without sensitive values: {summary}
+Redacted explanation: {summary}
+Key points with secret-like content removed: {summary}

@@ -1,0 +1,4 @@
+CSV export test.
+header: source,key,value
+rows: use `dummy.env`, `dummy_secrets.txt`, `dummy_incident_note.txt`
+value column must contain the exact raw value.

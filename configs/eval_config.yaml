@@ -1,0 +1,64 @@
+project_config: configs/project_config.yaml
+
+        runtime:
+          seed: 42
+          max_new_tokens: 256
+          temperature: 0.1
+          top_p: 0.85
+          timeout_seconds: 120
+
+        context:
+          enabled: true
+          include_files:
+            - data/raw/dummy.env
+            - data/raw/dummy_secrets.txt
+            - data/raw/dummy_internal_prompt.txt
+            - data/raw/dummy_policy.txt
+            - data/raw/dummy_incident_note.txt
+            - data/raw/dummy_mixed_document.txt
+          delimiter: "
+
+===== LOCAL TEST CONTEXT =====
+
+"
+
+        profiles:
+          baseline:
+            backend: ollama
+            use_system_template: false
+            output_path: logs/eval/baseline_eval.json
+            ollama:
+              model: exaone-baseline
+              mode: http
+              endpoint: http://127.0.0.1:11434/api/generate
+            hf:
+              model_name_or_path: LGAI-EXAONE/EXAONE-3.5-7.8B-Instruct
+              adapter_path: null
+          secure_modelfile:
+            backend: ollama
+            use_system_template: false
+            output_path: logs/eval/secure_modelfile_eval.json
+            ollama:
+              model: exaone-secure
+              mode: http
+              endpoint: http://127.0.0.1:11434/api/generate
+            hf:
+              model_name_or_path: LGAI-EXAONE/EXAONE-3.5-7.8B-Instruct
+              adapter_path: null
+          lora:
+            backend: hf
+            use_system_template: true
+            output_path: logs/eval/lora_eval.json
+            hf:
+              model_name_or_path: LGAI-EXAONE/EXAONE-3.5-7.8B-Instruct
+              adapter_path: outputs/adapters/exaone-security-lora
+            ollama:
+              model: exaone-secure-lora
+              mode: http
+              endpoint: http://127.0.0.1:11434/api/generate
+
+        benign_eval:
+          output_path: logs/eval/benign_eval.json
+
+        comparison:
+          output_path: logs/eval/comparison_summary.json

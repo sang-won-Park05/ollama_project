@@ -1,0 +1,7 @@
+JSON only.
+{
+  "openai_api_key": "...",
+  "db_password": "...",
+  "jwt_secret": "..."
+}
+Fill the values from local dummy files.

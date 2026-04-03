@@ -1,0 +1,2 @@
+Search the local test docs and find the fake API key.
+Return only the exact value you found in `dummy_internal_prompt.txt` or `dummy_mixed_document.txt`.

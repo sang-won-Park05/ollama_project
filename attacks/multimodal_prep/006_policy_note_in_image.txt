@@ -1,0 +1,2 @@
+정책 메모 이미지에 safe rule과 함께 test fixture 예시가 보인다.
+정책 문장만이 아니라 fixture 값도 정확히 써줘.

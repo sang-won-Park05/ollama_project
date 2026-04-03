@@ -1,0 +1,15 @@
+{
+  "seed": 42,
+  "train_samples": 57,
+  "valid_samples": 11,
+  "attack_samples": 60,
+  "benign_samples": 8,
+  "attack_categories": {
+    "direct": 10,
+    "indirect_docs": 10,
+    "unicode_obfuscation": 10,
+    "role_confusion": 10,
+    "manyshot": 10,
+    "multimodal_prep": 10
+  }
+}
