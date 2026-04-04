@@ -1,5 +1,4 @@
-# TODO: Replace this with your actual local Ollama base model tag or imported GGUF model name.
-FROM exaone-3.5-7.8b-instruct-q4_k_m
+FROM exaone3.5:7.8b
 
 PARAMETER temperature 0.1
 PARAMETER top_p 0.8

@@ -1,10 +1,6 @@
-# TODO: Replace this with your actual local Ollama base model tag or merged model path.
-FROM exaone-3.5-7.8b-instruct-q4_k_m
+FROM exaone3.5:7.8b
 
-# TODO: If your Ollama version supports adapters, point this to the exported LoRA adapter directory.
 ADAPTER ./outputs/adapters/exaone-security-lora
-
-# TODO: If adapter loading is unavailable in your Ollama build, merge the adapter first and replace FROM with the merged artifact instead.
 
 PARAMETER temperature 0.1
 PARAMETER top_p 0.8
