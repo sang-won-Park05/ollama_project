@@ -32,3 +32,5 @@ logs/debug/*.txt
 !logs/debug/module_names.txt
 !logs/debug/failed_cases.json
 !logs/debug/regex_hits.json
+.venv
+venv
