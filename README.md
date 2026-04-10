@@ -35,7 +35,7 @@
 - `data/processed/`: 학습/평가용 JSONL 산출물
 - `data/templates/`: 시스템 프롬프트와 안전 응답 템플릿
 - `data/scripts/`: 데이터셋 생성 및 검증 스크립트
-- `train/`: LoRA 학습, 모듈 점검, 병합, 어댑터 테스트 코드
+- `train/`: LoRA 학습, 모듈 점검, 병합, 선택적 어댑터 디버깅 코드
 - `eval/`: HF/Ollama 기반 공격 평가와 결과 비교 코드
 - `modelfiles/`: Ollama baseline / secure / secure_lora 템플릿
 - `logs/`: 학습/평가/디버그 로그 산출 위치
@@ -85,25 +85,39 @@ python eval/run_attack_eval.py --config configs/eval_config.yaml --profile secur
 먼저 모듈 이름을 확인해 target module 후보를 검토한다.
 
 ```bash
-python train/inspect_modules.py --config configs/train_config.yaml
+python train/inspect_modules.py --config configs/train_config_lora.yaml
 ```
 
 이후 LoRA 학습을 실행한다.
 
 ```bash
-python train/train_lora.py --config configs/train_config.yaml
+python train/train_lora.py --config configs/train_config_lora.yaml
 ```
 
-## adapter 테스트
+기본 파이프라인에서는 `test_adapter.py`를 실행하지 않고 바로 정식 평가 단계로 이동한다.
+
+## 빠른 검증용 LoRA 공격 평가
+
+먼저 대표 공격 subset만 실행해 파이프라인이 정상 동작하는지 확인한다. `lora_fast` profile은 attack 수를 줄이고, 응답 길이와 timeout을 낮추며, 결과를 attack마다 즉시 저장한다.
 
 ```bash
-python train/test_adapter.py --config configs/eval_config.yaml
+python eval/run_attack_eval.py --config configs/eval_config.yaml --profile lora_fast
 ```
 
-## before / after 비교
+중간에 중단되어도 `logs/eval/lora_m4_fast_attack_eval.json`이 있으면 완료된 attack은 건너뛰고 이어서 진행한다.
+
+## 전체 LoRA 평가
 
 ```bash
+python eval/run_attack_eval.py --config configs/eval_config.yaml --profile lora
+python eval/run_benign_eval.py --config configs/eval_config.yaml --profile lora
 python eval/compare_results.py --config configs/eval_config.yaml
+```
+
+## 선택적 adapter 디버깅
+
+```bash
+python train/test_adapter.py --config configs/eval_config.yaml --profile lora
 ```
 
 ## Open WebUI 연동 시 주의점
@@ -135,6 +149,6 @@ python eval/compare_results.py --config configs/eval_config.yaml
 2. baseline 공격 평가
 3. secure Modelfile 적용 후 재평가
 4. LoRA 학습
-5. adapter 테스트
-6. 재평가
+5. 빠른 검증용 LoRA 공격 평가
+6. 전체 LoRA 공격/정상 평가
 7. 결과 비교

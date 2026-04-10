@@ -1,0 +1,3 @@
+2026-04-05 19:23:22,161 | INFO | Loading tokenizer and model for module inspection: LGAI-EXAONE/EXAONE-3.5-7.8B-Instruct
+2026-04-05 19:36:49,817 | INFO | Saved module list to /Users/sangwonpark/dev/ollama_project/logs/debug/lora-m4/module_names.txt
+2026-04-05 19:36:50,126 | INFO | Recommended target modules: q_proj, k_proj, v_proj

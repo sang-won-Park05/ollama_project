@@ -1,0 +1,363 @@
+2026-04-05 19:39:07,768 | INFO | Loading tokenizer: LGAI-EXAONE/EXAONE-3.5-7.8B-Instruct
+2026-04-05 19:39:09,750 | INFO | Loading base model for LoRA training
+2026-04-05 19:43:15,534 | INFO | Resolved runtime device: mps:0
+2026-04-05 19:43:15,861 | INFO | Using target modules: q_proj, k_proj, v_proj
+2026-04-05 19:43:16,164 | ERROR | Training failed: `get_input_embeddings` not auto‑handled for ExaoneModel; please override in the subclass.
+2026-04-05 19:43:16,316 | ERROR | Traceback (most recent call last):
+  File "/Users/sangwonpark/dev/ollama_project/train/train_lora.py", line 68, in main
+    model = attach_lora_adapter(model, train_config["lora"], target_modules)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/train/utils/model_loader.py", line 141, in attach_lora_adapter
+    return get_peft_model(prepared_model, peft_config)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/peft/mapping_func.py", line 122, in get_peft_model
+    return MODEL_TYPE_TO_PEFT_MODEL_MAPPING[peft_config.task_type](
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/peft/peft_model.py", line 1885, in __init__
+    super().__init__(model, peft_config, adapter_name, **kwargs)
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/peft/peft_model.py", line 129, in __init__
+    self.base_model = cls(model, {adapter_name: peft_config}, adapter_name)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/peft/tuners/tuners_utils.py", line 298, in __init__
+    self.inject_adapter(self.model, adapter_name, low_cpu_mem_usage=low_cpu_mem_usage, state_dict=state_dict)
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/peft/tuners/tuners_utils.py", line 711, in inject_adapter
+    self._check_tied_modules(model, peft_config)
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/peft/tuners/tuners_utils.py", line 1202, in _check_tied_modules
+    tied_weight_keys = self._get_module_names_tied_with_embedding()
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/peft/tuners/tuners_utils.py", line 1178, in _get_module_names_tied_with_embedding
+    return _get_module_names_tied_with_embedding(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/peft/utils/other.py", line 1613, in _get_module_names_tied_with_embedding
+    input_embedding_params = set(model.get_input_embeddings().parameters())
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/transformers/modeling_utils.py", line 1029, in get_input_embeddings
+    return base_model.get_input_embeddings()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/transformers/modeling_utils.py", line 1031, in get_input_embeddings
+    raise NotImplementedError(
+NotImplementedError: `get_input_embeddings` not auto‑handled for ExaoneModel; please override in the subclass.
+
+2026-04-05 19:56:02,662 | INFO | Loading tokenizer: LGAI-EXAONE/EXAONE-3.5-7.8B-Instruct
+2026-04-05 19:56:04,617 | INFO | Loading base model for LoRA training
+2026-04-05 19:59:40,247 | INFO | Resolved runtime device: mps:0
+2026-04-05 19:59:40,582 | INFO | Using target modules: q_proj, k_proj, v_proj
+2026-04-05 19:59:48,272 | ERROR | Training failed: TrainingArguments.__init__() got an unexpected keyword argument 'evaluation_strategy'
+2026-04-05 19:59:48,274 | ERROR | Traceback (most recent call last):
+  File "/Users/sangwonpark/dev/ollama_project/train/train_lora.py", line 110, in main
+    training_args = TrainingArguments(**training_kwargs)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: TrainingArguments.__init__() got an unexpected keyword argument 'evaluation_strategy'
+
+2026-04-05 20:05:36,752 | INFO | Loading tokenizer: LGAI-EXAONE/EXAONE-3.5-7.8B-Instruct
+2026-04-05 20:05:38,695 | INFO | Loading base model for LoRA training
+2026-04-05 20:09:44,708 | INFO | Resolved runtime device: mps:0
+2026-04-05 20:09:46,341 | INFO | Using target modules: q_proj, k_proj, v_proj
+2026-04-05 20:09:50,012 | INFO | Starting training
+2026-04-05 20:12:21,415 | ERROR | Training failed: MPS backend out of memory (MPS allocated: 18.11 GiB, other allocations: 18.80 MiB, max allowed: 18.13 GiB). Tried to allocate 2.95 MiB on private pool. Use PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0 to disable upper limit for memory allocations (may cause system failure).
+2026-04-05 20:12:22,882 | ERROR | Traceback (most recent call last):
+  File "/Users/sangwonpark/dev/ollama_project/train/train_lora.py", line 161, in main
+    train_result = trainer.train()
+                   ^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/transformers/trainer.py", line 1424, in train
+    return inner_training_loop(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/transformers/trainer.py", line 1506, in _inner_training_loop
+    self._run_epoch(
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/transformers/trainer.py", line 1734, in _run_epoch
+    tr_loss_step = self.training_step(model, inputs, num_items_in_batch)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/trl/trainer/sft_trainer.py", line 1379, in training_step
+    return super().training_step(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/transformers/trainer.py", line 1906, in training_step
+    loss = self.compute_loss(model, inputs, num_items_in_batch=num_items_in_batch)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/trl/trainer/sft_trainer.py", line 1275, in compute_loss
+    (loss, outputs) = super().compute_loss(
+                      ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/transformers/trainer.py", line 1978, in compute_loss
+    outputs = model(**inputs)
+              ^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1779, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1790, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/peft/peft_model.py", line 1923, in forward
+    return self.base_model(
+           ^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1779, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1790, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/peft/tuners/tuners_utils.py", line 311, in forward
+    return self.model.forward(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/transformers/utils/generic.py", line 876, in wrapper
+    output = func(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/.cache/huggingface/modules/transformers_modules/LGAI_hyphen_EXAONE/EXAONE_hyphen_3_dot_5_hyphen_7_dot_8B_hyphen_Instruct/553ea250b9a5317231459279d5847d6cf955b9aa/modeling_exaone.py", line 514, in forward
+    outputs: BaseModelOutputWithPast = self.transformer(
+                                       ^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1779, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1790, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/transformers/utils/generic.py", line 952, in wrapper
+    output = func(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/.cache/huggingface/modules/transformers_modules/LGAI_hyphen_EXAONE/EXAONE_hyphen_3_dot_5_hyphen_7_dot_8B_hyphen_Instruct/553ea250b9a5317231459279d5847d6cf955b9aa/modeling_exaone.py", line 433, in forward
+    hidden_states = decoder_layer(
+                    ^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/transformers/modeling_layers.py", line 93, in __call__
+    return super().__call__(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1779, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1790, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/.cache/huggingface/modules/transformers_modules/LGAI_hyphen_EXAONE/EXAONE_hyphen_3_dot_5_hyphen_7_dot_8B_hyphen_Instruct/553ea250b9a5317231459279d5847d6cf955b9aa/modeling_exaone.py", line 266, in forward
+    hidden_states, _ = self.attn(
+                       ^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1779, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1790, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/.cache/huggingface/modules/transformers_modules/LGAI_hyphen_EXAONE/EXAONE_hyphen_3_dot_5_hyphen_7_dot_8B_hyphen_Instruct/553ea250b9a5317231459279d5847d6cf955b9aa/modeling_exaone.py", line 216, in forward
+    return self.attention(
+           ^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1779, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1790, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/.cache/huggingface/modules/transformers_modules/LGAI_hyphen_EXAONE/EXAONE_hyphen_3_dot_5_hyphen_7_dot_8B_hyphen_Instruct/553ea250b9a5317231459279d5847d6cf955b9aa/modeling_exaone.py", line 182, in forward
+    attn_output, attn_weights = attention_interface(
+                                ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/transformers/integrations/sdpa_attention.py", line 92, in sdpa_attention_forward
+    attn_output = torch.nn.functional.scaled_dot_product_attention(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: MPS backend out of memory (MPS allocated: 18.11 GiB, other allocations: 18.80 MiB, max allowed: 18.13 GiB). Tried to allocate 2.95 MiB on private pool. Use PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0 to disable upper limit for memory allocations (may cause system failure).
+
+2026-04-06 19:18:17,650 | INFO | Loading tokenizer: LGAI-EXAONE/EXAONE-3.5-7.8B-Instruct
+2026-04-06 19:18:19,408 | INFO | Loading base model for LoRA training
+2026-04-06 19:20:39,338 | INFO | Resolved runtime device: mps:0
+2026-04-06 19:20:39,519 | INFO | Using target modules: q_proj, k_proj, v_proj
+2026-04-06 19:20:49,242 | INFO | Starting training
+2026-04-06 19:22:21,416 | ERROR | Training failed: MPS backend out of memory (MPS allocated: 18.11 GiB, other allocations: 18.80 MiB, max allowed: 18.13 GiB). Tried to allocate 2.95 MiB on private pool. Use PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0 to disable upper limit for memory allocations (may cause system failure).
+2026-04-06 19:22:21,493 | ERROR | Traceback (most recent call last):
+  File "/Users/sangwonpark/dev/ollama_project/train/train_lora.py", line 161, in main
+    train_result = trainer.train()
+                   ^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/transformers/trainer.py", line 1424, in train
+    return inner_training_loop(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/transformers/trainer.py", line 1506, in _inner_training_loop
+    self._run_epoch(
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/transformers/trainer.py", line 1734, in _run_epoch
+    tr_loss_step = self.training_step(model, inputs, num_items_in_batch)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/trl/trainer/sft_trainer.py", line 1379, in training_step
+    return super().training_step(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/transformers/trainer.py", line 1906, in training_step
+    loss = self.compute_loss(model, inputs, num_items_in_batch=num_items_in_batch)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/trl/trainer/sft_trainer.py", line 1275, in compute_loss
+    (loss, outputs) = super().compute_loss(
+                      ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/transformers/trainer.py", line 1978, in compute_loss
+    outputs = model(**inputs)
+              ^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1779, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1790, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/peft/peft_model.py", line 1923, in forward
+    return self.base_model(
+           ^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1779, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1790, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/peft/tuners/tuners_utils.py", line 311, in forward
+    return self.model.forward(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/transformers/utils/generic.py", line 876, in wrapper
+    output = func(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/.cache/huggingface/modules/transformers_modules/LGAI_hyphen_EXAONE/EXAONE_hyphen_3_dot_5_hyphen_7_dot_8B_hyphen_Instruct/553ea250b9a5317231459279d5847d6cf955b9aa/modeling_exaone.py", line 514, in forward
+    outputs: BaseModelOutputWithPast = self.transformer(
+                                       ^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1779, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1790, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/transformers/utils/generic.py", line 952, in wrapper
+    output = func(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/.cache/huggingface/modules/transformers_modules/LGAI_hyphen_EXAONE/EXAONE_hyphen_3_dot_5_hyphen_7_dot_8B_hyphen_Instruct/553ea250b9a5317231459279d5847d6cf955b9aa/modeling_exaone.py", line 433, in forward
+    hidden_states = decoder_layer(
+                    ^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/transformers/modeling_layers.py", line 93, in __call__
+    return super().__call__(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1779, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1790, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/.cache/huggingface/modules/transformers_modules/LGAI_hyphen_EXAONE/EXAONE_hyphen_3_dot_5_hyphen_7_dot_8B_hyphen_Instruct/553ea250b9a5317231459279d5847d6cf955b9aa/modeling_exaone.py", line 266, in forward
+    hidden_states, _ = self.attn(
+                       ^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1779, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1790, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/.cache/huggingface/modules/transformers_modules/LGAI_hyphen_EXAONE/EXAONE_hyphen_3_dot_5_hyphen_7_dot_8B_hyphen_Instruct/553ea250b9a5317231459279d5847d6cf955b9aa/modeling_exaone.py", line 216, in forward
+    return self.attention(
+           ^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1779, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1790, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/.cache/huggingface/modules/transformers_modules/LGAI_hyphen_EXAONE/EXAONE_hyphen_3_dot_5_hyphen_7_dot_8B_hyphen_Instruct/553ea250b9a5317231459279d5847d6cf955b9aa/modeling_exaone.py", line 182, in forward
+    attn_output, attn_weights = attention_interface(
+                                ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/transformers/integrations/sdpa_attention.py", line 92, in sdpa_attention_forward
+    attn_output = torch.nn.functional.scaled_dot_product_attention(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: MPS backend out of memory (MPS allocated: 18.11 GiB, other allocations: 18.80 MiB, max allowed: 18.13 GiB). Tried to allocate 2.95 MiB on private pool. Use PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0 to disable upper limit for memory allocations (may cause system failure).
+
+2026-04-06 19:38:32,169 | INFO | Loading tokenizer: LGAI-EXAONE/EXAONE-3.5-7.8B-Instruct
+2026-04-06 19:38:34,014 | INFO | Loading base model for LoRA training
+2026-04-06 19:40:43,662 | INFO | Resolved runtime device: mps:0
+2026-04-06 19:40:43,732 | INFO | Using target modules: q_proj, k_proj, v_proj
+2026-04-06 19:40:48,020 | INFO | Starting training
+2026-04-06 19:42:14,265 | ERROR | Training failed: MPS backend out of memory (MPS allocated: 18.11 GiB, other allocations: 18.81 MiB, max allowed: 18.13 GiB). Tried to allocate 2.95 MiB on private pool. Use PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0 to disable upper limit for memory allocations (may cause system failure).
+2026-04-06 19:42:14,342 | ERROR | Traceback (most recent call last):
+  File "/Users/sangwonpark/dev/ollama_project/train/train_lora.py", line 161, in main
+    train_result = trainer.train()
+                   ^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/transformers/trainer.py", line 1424, in train
+    return inner_training_loop(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/transformers/trainer.py", line 1506, in _inner_training_loop
+    self._run_epoch(
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/transformers/trainer.py", line 1734, in _run_epoch
+    tr_loss_step = self.training_step(model, inputs, num_items_in_batch)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/trl/trainer/sft_trainer.py", line 1379, in training_step
+    return super().training_step(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/transformers/trainer.py", line 1906, in training_step
+    loss = self.compute_loss(model, inputs, num_items_in_batch=num_items_in_batch)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/trl/trainer/sft_trainer.py", line 1275, in compute_loss
+    (loss, outputs) = super().compute_loss(
+                      ^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/transformers/trainer.py", line 1978, in compute_loss
+    outputs = model(**inputs)
+              ^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1779, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1790, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/peft/peft_model.py", line 1923, in forward
+    return self.base_model(
+           ^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1779, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1790, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/peft/tuners/tuners_utils.py", line 311, in forward
+    return self.model.forward(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/transformers/utils/generic.py", line 876, in wrapper
+    output = func(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/.cache/huggingface/modules/transformers_modules/LGAI_hyphen_EXAONE/EXAONE_hyphen_3_dot_5_hyphen_7_dot_8B_hyphen_Instruct/553ea250b9a5317231459279d5847d6cf955b9aa/modeling_exaone.py", line 514, in forward
+    outputs: BaseModelOutputWithPast = self.transformer(
+                                       ^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1779, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1790, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/transformers/utils/generic.py", line 952, in wrapper
+    output = func(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/.cache/huggingface/modules/transformers_modules/LGAI_hyphen_EXAONE/EXAONE_hyphen_3_dot_5_hyphen_7_dot_8B_hyphen_Instruct/553ea250b9a5317231459279d5847d6cf955b9aa/modeling_exaone.py", line 433, in forward
+    hidden_states = decoder_layer(
+                    ^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/transformers/modeling_layers.py", line 93, in __call__
+    return super().__call__(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1779, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1790, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/.cache/huggingface/modules/transformers_modules/LGAI_hyphen_EXAONE/EXAONE_hyphen_3_dot_5_hyphen_7_dot_8B_hyphen_Instruct/553ea250b9a5317231459279d5847d6cf955b9aa/modeling_exaone.py", line 266, in forward
+    hidden_states, _ = self.attn(
+                       ^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1779, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1790, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/.cache/huggingface/modules/transformers_modules/LGAI_hyphen_EXAONE/EXAONE_hyphen_3_dot_5_hyphen_7_dot_8B_hyphen_Instruct/553ea250b9a5317231459279d5847d6cf955b9aa/modeling_exaone.py", line 216, in forward
+    return self.attention(
+           ^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1779, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/torch/nn/modules/module.py", line 1790, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/.cache/huggingface/modules/transformers_modules/LGAI_hyphen_EXAONE/EXAONE_hyphen_3_dot_5_hyphen_7_dot_8B_hyphen_Instruct/553ea250b9a5317231459279d5847d6cf955b9aa/modeling_exaone.py", line 182, in forward
+    attn_output, attn_weights = attention_interface(
+                                ^^^^^^^^^^^^^^^^^^^^
+  File "/Users/sangwonpark/dev/ollama_project/.venv/lib/python3.11/site-packages/transformers/integrations/sdpa_attention.py", line 92, in sdpa_attention_forward
+    attn_output = torch.nn.functional.scaled_dot_product_attention(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: MPS backend out of memory (MPS allocated: 18.11 GiB, other allocations: 18.81 MiB, max allowed: 18.13 GiB). Tried to allocate 2.95 MiB on private pool. Use PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.0 to disable upper limit for memory allocations (may cause system failure).
+
+2026-04-06 20:08:12,374 | INFO | Loading tokenizer: LGAI-EXAONE/EXAONE-3.5-7.8B-Instruct
+2026-04-06 20:08:14,243 | INFO | Loading base model for LoRA training
+2026-04-06 20:10:24,848 | INFO | Resolved runtime device: mps:0
+2026-04-06 20:10:25,163 | INFO | Using target modules: q_proj, k_proj, v_proj
+2026-04-06 20:10:31,748 | INFO | Memory settings: gradient_checkpointing=True, use_cache=False
+2026-04-06 20:10:32,838 | INFO | Cleared MPS cache before training start
+2026-04-06 20:10:32,838 | INFO | Starting training
+2026-04-06 23:35:33,069 | INFO | Saving adapter to /Users/sangwonpark/dev/ollama_project/outputs/adapters/exaone-security-lora-m4
+2026-04-06 23:35:34,463 | INFO | Training complete

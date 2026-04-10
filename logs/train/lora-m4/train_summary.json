@@ -1,0 +1,23 @@
+{
+  "train_metrics": {
+    "train_runtime": 11305.7683,
+    "train_samples_per_second": 0.007,
+    "train_steps_per_second": 0.002,
+    "total_flos": 1022559744172032.0,
+    "train_loss": 4.575631713867187
+  },
+  "eval_metrics": {
+    "eval_loss": 4.115674018859863,
+    "eval_runtime": 994.2853,
+    "eval_samples_per_second": 0.011,
+    "eval_steps_per_second": 0.011
+  },
+  "target_modules": [
+    "q_proj",
+    "k_proj",
+    "v_proj"
+  ],
+  "adapter_dir": "/Users/sangwonpark/dev/ollama_project/outputs/adapters/exaone-security-lora-m4",
+  "checkpoint_dir": "/Users/sangwonpark/dev/ollama_project/outputs/checkpoints/lora-m4",
+  "runtime_device": "mps:0"
+}

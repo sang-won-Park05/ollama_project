@@ -22,9 +22,12 @@ class OllamaRunner:
         temperature: float,
         top_p: float,
         do_sample: bool,
+        timeout_seconds: int | None = None,
+        max_input_tokens: int | None = None,
     ) -> str:
         system_prompt = "\n\n".join(message["content"] for message in messages if message["role"] == "system")
         user_prompt = "\n\n".join(message["content"] for message in messages if message["role"] == "user")
+        request_timeout = timeout_seconds if timeout_seconds is not None and timeout_seconds > 0 else self.timeout_seconds
         if self.mode == "cli":
             combined_prompt = f"{system_prompt}\n\n{user_prompt}".strip()
             result = subprocess.run(
@@ -32,7 +35,7 @@ class OllamaRunner:
                 capture_output=True,
                 text=True,
                 check=True,
-                timeout=self.timeout_seconds,
+                timeout=request_timeout,
             )
             return result.stdout.strip()
 
@@ -50,7 +53,7 @@ class OllamaRunner:
         }
         if not do_sample:
             payload["options"]["temperature"] = temperature
-        response = requests.post(self.endpoint, json=payload, timeout=self.timeout_seconds)
+        response = requests.post(self.endpoint, json=payload, timeout=request_timeout)
         response.raise_for_status()
         data = response.json()
         if "response" not in data:

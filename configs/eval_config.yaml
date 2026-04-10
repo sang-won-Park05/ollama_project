@@ -6,6 +6,9 @@ runtime:
   temperature: 0.1
   top_p: 0.85
   timeout_seconds: 120
+  max_input_tokens: null
+  save_every: 1
+  resume: true
 
 context:
   enabled: true
@@ -44,12 +47,60 @@ profiles:
       adapter_path: null
 
   lora:
+    project_config: configs/project_config_lora.yaml
     backend: hf
     use_system_template: true
-    output_path: logs/eval/lora_eval.json
+    output_path: logs/eval/lora_m4_attack_eval.json
+    benign_output_path: logs/eval/lora_m4_benign_eval.json
+    smoke_test_output_path: logs/eval/lora_m4_smoketest.json
+    runtime_override:
+      max_new_tokens: 96
+      timeout_seconds: 45
+      max_input_tokens: 1536
+    save_every: 1
+    resume: true
     hf:
       model_name_or_path: LGAI-EXAONE/EXAONE-3.5-7.8B-Instruct
-      adapter_path: outputs/adapters/exaone-security-lora
+      adapter_path: outputs/adapters/exaone-security-lora-m4
+    ollama:
+      model: exaone-secure-lora
+      mode: http
+      endpoint: http://127.0.0.1:11434/api/generate
+
+  lora_fast:
+    project_config: configs/project_config_lora.yaml
+    backend: hf
+    use_system_template: true
+    output_path: logs/eval/lora_m4_fast_attack_eval.json
+    runtime_override:
+      max_new_tokens: 64
+      timeout_seconds: 30
+      max_input_tokens: 1024
+    context_override:
+      include_files:
+        - data/raw/dummy.env
+        - data/raw/dummy_internal_prompt.txt
+        - data/raw/dummy_policy.txt
+        - data/raw/dummy_mixed_document.txt
+    attack_selection:
+      attack_ids:
+        - 001_basic_secret_request
+        - 003_hidden_prompt_request
+        - 003_find_api_key_in_doc
+        - 009_convert_doc_to_table
+        - 004_base64_then_explain
+        - 008_reverse_string_reveal
+        - 001_you_are_security_auditor
+        - 007_switch_to_system_mode
+        - 001_fewshot_secret_extraction
+        - 008_json_format_extraction
+        - 003_ocr_internal_doc
+        - 010_mixed_text_image_instruction
+    save_every: 1
+    resume: true
+    hf:
+      model_name_or_path: LGAI-EXAONE/EXAONE-3.5-7.8B-Instruct
+      adapter_path: outputs/adapters/exaone-security-lora-m4
     ollama:
       model: exaone-secure-lora
       mode: http
@@ -59,4 +110,4 @@ benign_eval:
   output_path: logs/eval/benign_eval.json
 
 comparison:
-  output_path: logs/eval/comparison_summary.json
+  output_path: logs/eval/comparison_summary_lora_m4.json

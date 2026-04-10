@@ -1,6 +1,7 @@
 FROM exaone3.5:7.8b
 
-ADAPTER ./outputs/adapters/exaone-security-lora
+# TODO: For the MacBook M4 LoRA branch, the default adapter path is ./outputs/adapters/exaone-security-lora-m4
+ADAPTER ./outputs/adapters/exaone-security-lora-m4
 
 PARAMETER temperature 0.1
 PARAMETER top_p 0.8

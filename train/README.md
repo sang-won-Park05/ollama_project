@@ -4,12 +4,13 @@
 
 권장 순서:
 
-1. `python train/inspect_modules.py --config configs/train_config.yaml`
+1. `python train/inspect_modules.py --config configs/train_config_lora.yaml`
 2. `python data/scripts/make_dataset.py --config configs/project_config.yaml`
-3. `python train/train_lora.py --config configs/train_config.yaml`
-4. `python train/test_adapter.py --config configs/eval_config.yaml`
-5. 필요 시 `python train/merge_adapter.py --config configs/train_config.yaml`
-6. 추후 export 준비는 `python train/export_artifacts.py --config configs/train_config.yaml`
+3. `python train/train_lora.py --config configs/train_config_lora.yaml`
+4. 기본 파이프라인에서는 `test_adapter.py`를 건너뛰고 `eval/run_attack_eval.py`, `eval/run_benign_eval.py`, `eval/compare_results.py`로 진행
+5. 선택적 디버깅이 필요할 때만 `python train/test_adapter.py --config configs/eval_config.yaml --profile lora`
+6. 필요 시 `python train/merge_adapter.py --config configs/train_config_lora.yaml`
+7. 추후 export 준비는 `python train/export_artifacts.py --config configs/train_config_lora.yaml`
 
 주의:
 

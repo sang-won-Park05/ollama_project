@@ -59,7 +59,8 @@ def load_benign_prompts(processed_root: Path) -> list[dict[str, Any]]:
 def generate_response(model: Any, tokenizer: Any, messages: list[dict[str, str]], max_new_tokens: int) -> str:
     prompt = apply_chat_template_to_messages(tokenizer, messages, add_generation_prompt=True)
     encoded = tokenizer(prompt, return_tensors="pt")
-    encoded = {key: value.to(model.device) for key, value in encoded.items()}
+    model_device = next(model.parameters()).device
+    encoded = {key: value.to(model_device) for key, value in encoded.items()}
     with torch.no_grad():
         outputs = model.generate(
             **encoded,
@@ -78,30 +79,34 @@ def generate_response(model: Any, tokenizer: Any, messages: list[dict[str, str]]
 def main() -> None:
     parser = argparse.ArgumentParser(description="Run a smoke test against the trained adapter using attack and benign prompts.")
     parser.add_argument("--config", type=Path, default=Path("configs/eval_config.yaml"))
+    parser.add_argument("--profile", type=str, default="lora")
     args = parser.parse_args()
 
     eval_config = load_yaml(args.config)
-    project_config = load_yaml(Path(eval_config["project_config"]))
+    profile = eval_config["profiles"][args.profile]
+    project_config = load_yaml(Path(profile.get("project_config", eval_config["project_config"])))
     detector = PatternDetector.from_files(
         root=Path(project_config["project"]["root_dir"]).resolve(),
         safety_config_path=Path(project_config["safety"]["patterns_config"]),
     )
 
-    profile = eval_config["profiles"]["lora"]
     adapter_path = profile["hf"]["adapter_path"]
     if not adapter_path or not (ROOT / adapter_path).exists():
         raise FileNotFoundError(f"Adapter path not found: {adapter_path}")
 
     tokenizer = load_tokenizer(
-        project_config["model"]["base_model_id"],
+        profile["hf"]["model_name_or_path"],
         trust_remote_code=project_config["model"]["trust_remote_code"],
     )
     model = load_model_with_adapter(
-        project_config["model"]["base_model_id"],
+        profile["hf"]["model_name_or_path"],
         str(ROOT / adapter_path),
         trust_remote_code=project_config["model"]["trust_remote_code"],
         load_in_4bit=project_config["model"]["load_in_4bit"],
         use_bf16=project_config["model"]["bf16"],
+        device_preference=project_config["model"].get("device"),
+        dtype_name=project_config["model"].get("dtype"),
+        use_mps=bool(project_config["model"].get("use_mps", False)),
     )
     model.eval()
 
@@ -109,7 +114,11 @@ def main() -> None:
     refusal_markers = detector.refusal_markers
 
     results: list[dict[str, Any]] = []
-    for item in load_representative_attack_prompts(ROOT / "attacks"):
+
+    attack_items = load_representative_attack_prompts(ROOT / "attacks")
+    for idx, item in enumerate(attack_items, start=1):
+        print(f"[ATTACK {idx}/{len(attack_items)}] {item['id']}", flush=True)
+
         messages = [
             {"role": "system", "content": system_prompt},
             {"role": "user", "content": item["prompt"]},
@@ -128,7 +137,11 @@ def main() -> None:
             }
         )
 
-    for item in load_benign_prompts(ROOT / "data" / "processed"):
+    benign_eval_path = ROOT / project_config["dataset"]["benign_eval_path"]
+    benign_items = load_benign_prompts(benign_eval_path.parent)
+    for idx, item in enumerate(benign_items, start=1):
+        print(f"[BENIGN {idx}/{len(benign_items)}] {item['id']}", flush=True)
+
         prompt = item["messages"][0]["content"]
         messages = [
             {"role": "system", "content": system_prompt},
@@ -159,8 +172,8 @@ def main() -> None:
         "benign_fail": sum(1 for item in benign_results if item["verdict"] == "fail"),
     }
 
-    payload = {"profile": "lora", "summary": summary, "results": results}
-    output_path = ROOT / eval_config["profiles"]["lora"]["output_path"]
+    payload = {"profile": args.profile, "summary": summary, "results": results}
+    output_path = ROOT / profile.get("smoke_test_output_path", profile["output_path"])
     save_json(output_path, payload)
     print(json.dumps(payload, ensure_ascii=False, indent=2))
 

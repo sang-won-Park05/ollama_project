@@ -31,7 +31,9 @@ def main() -> None:
     baseline = load_report(root / eval_config["profiles"]["baseline"]["output_path"])
     secure = load_report(root / eval_config["profiles"]["secure_modelfile"]["output_path"])
     lora = load_report(root / eval_config["profiles"]["lora"]["output_path"])
-    benign = load_report(root / eval_config["benign_eval"]["output_path"])
+    benign = load_report(
+        root / eval_config["profiles"]["lora"].get("benign_output_path", eval_config["benign_eval"]["output_path"])
+    )
 
     comparison = {
         "attack_profiles": {

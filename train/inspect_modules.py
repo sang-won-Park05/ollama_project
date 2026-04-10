@@ -20,7 +20,9 @@ def main() -> None:
     config = load_yaml(args.config)
     project_config = load_yaml(Path(config["project_config"]))
     root = Path(project_config["project"]["root_dir"]).resolve()
-    logger = setup_logger(root / "logs" / "train" / "train.log")
+    logging_dir = root / config["training"].get("logging_dir", "logs/train")
+    debug_dir = root / config["training"].get("debug_dir", "logs/debug")
+    logger = setup_logger(logging_dir / "inspect_modules.log")
 
     model_name = project_config["model"]["base_model_id"]
     logger.info("Loading tokenizer and model for module inspection: %s", model_name)
@@ -31,6 +33,9 @@ def main() -> None:
         load_in_4bit=project_config["model"]["load_in_4bit"],
         use_bf16=project_config["model"]["bf16"],
         gradient_checkpointing=False,
+        device_preference=project_config["model"].get("device"),
+        dtype_name=project_config["model"].get("dtype"),
+        use_mps=bool(project_config["model"].get("use_mps", False)),
     )
 
     module_lines: list[str] = []
@@ -40,7 +45,7 @@ def main() -> None:
         module_lines.append(f"{name}\t{class_name}")
         suffix_counter[name.rsplit(".", 1)[-1]] += 1
 
-    output_path = root / "logs" / "debug" / "module_names.txt"
+    output_path = debug_dir / "module_names.txt"
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text("\n".join(module_lines) + "\n", encoding="utf-8")
 
@@ -51,7 +56,7 @@ def main() -> None:
         "recommended_targets": recommended,
         "top_suffixes": suffix_counter.most_common(20),
     }
-    save_json(root / "logs" / "debug" / "module_summary.json", summary)
+    save_json(debug_dir / "module_summary.json", summary)
 
     logger.info("Saved module list to %s", output_path)
     logger.info("Recommended target modules: %s", ", ".join(recommended))

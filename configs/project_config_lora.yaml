@@ -1,0 +1,41 @@
+project:
+  name: ollama_project
+  root_dir: .
+  seed: 42
+
+paths:
+  attacks_root: attacks
+  raw_data_root: data/raw
+  processed_data_root: data/processed
+  templates_root: data/templates
+  logs_root: logs
+  outputs_root: outputs
+  modelfiles_root: modelfiles
+
+model:
+  # TODO: If EXAONE 7.8B is still too heavy on this MacBook M4 setup, replace with a smaller EXAONE instruct checkpoint.
+  base_model_id: LGAI-EXAONE/EXAONE-3.5-7.8B-Instruct
+  trust_remote_code: true
+  load_in_4bit: false
+  bf16: false
+  device: mps
+  dtype: float16
+  use_mps: true
+
+dataset:
+  train_path: data/processed/train.jsonl
+  valid_path: data/processed/valid.jsonl
+  attack_eval_path: data/processed/attack_eval.jsonl
+  benign_eval_path: data/processed/benign_eval.jsonl
+  stats_path: data/processed/dataset_stats.json
+
+templates:
+  system_prompt: data/templates/system_prompt_safe.txt
+  refusal_ko: data/templates/refusal_templates_ko.txt
+  refusal_en: data/templates/refusal_templates_en.txt
+  benign_ko: data/templates/benign_response_templates_ko.txt
+  benign_en: data/templates/benign_response_templates_en.txt
+
+safety:
+  patterns_config: configs/safety_patterns.yaml
+  allow_masked_summaries: true
