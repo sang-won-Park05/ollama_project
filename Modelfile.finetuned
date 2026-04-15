@@ -1,0 +1,4 @@
+FROM ./outputs/gguf/fine-tuning-exaone3.5.gguf
+
+PARAMETER temperature 0.1
+PARAMETER top_p 0.9
